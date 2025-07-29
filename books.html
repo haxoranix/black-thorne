@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victoria Blackthorne | Books</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a0000;
+            --secondary: #330000;
+            --accent: #8B0000;
+            --light: #f5f0e6;
+            --gold: #d4af37;
+            --dark-overlay: rgba(0, 0, 0, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--primary);
+            color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Background Effects */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.1) 0%, transparent 40%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 0, 0, 0.05) 2px, rgba(139, 0, 0, 0.05) 4px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Floating particles for ghostly effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(26, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            color: var(--gold);
+        }
+        
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .page-title h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .page-title p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            font-style: italic;
+            color: var(--accent);
+        }
+        
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .book-card {
+            background: rgba(26, 0, 0, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(212, 175, 57, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        }
+        
+        .book-cover {
+            height: 380px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(212, 175, 55, 0.05) 50%, transparent 60%),
+                linear-gradient(135deg, transparent 40%, rgba(212, 175, 55, 0.05) 50%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        .book-cover-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a0000, #330000);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .book-cover-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent),
+                linear-gradient(180deg, transparent, rgba(139, 0, 0, 0.1), transparent);
+            z-index: 1;
+        }
+        
+        .book-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+            z-index: 2;
+        }
+        
+        .book-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            z-index: 2;
+        }
+        
+        .book-year {
+            color: var(--gold);
+            font-size: 1rem;
+            z-index: 2;
+        }
+        
+        .book-info {
+            padding: 25px;
+        }
+        
+        .book-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+        
+        .book-info p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        .book-meta i {
+            color: var(--gold);
+            margin-right: 5px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: var(--gold);
+            color: var(--primary);
+            box-shadow: 0 0 15px var(--gold);
+        }
+        
+        /* Series Section */
+        .series-section {
+            margin-bottom: 80px;
+            background: rgba(26, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .series-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .series-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .series-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+        
+        .series-intro {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .series-books {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .series-book {
+            background: rgba(51, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .series-book:hover {
+            border-color: rgba(212, 175, 57, 0.4);
+            transform: translateY(-5px);
+        }
+        
+        .series-book h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+        
+        .series-book p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .series-book .book-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            color: var(--primary);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Newsletter CTA */
+        .newsletter-cta {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(26, 0, 0, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            margin-bottom: 80px;
+        }
+        
+        .newsletter-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .newsletter-cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-style: italic;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+        }
+        
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .newsletter-form button {
+            padding: 12px 25px;
+            background: var(--gold);
+            color: var(--primary);
+            border: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background: #e6c052;
+            box-shadow: 0 0 15px var(--gold);
+        }
+        
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--gold);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .footer-column p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--gold);
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .page-title h1 {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--primary);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
+            .page-title h1 {
+                font-size: 2.3rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="background-overlay"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo"><i class="fas fa-ghost"></i> Blackthorne</a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#" class="active">Books</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h1>Victoria Blackthorne's Books</h1>
+                <p>A collection of haunting tales that blur the line between the living and the dead</p>
+            </div>
+            
+            <!-- Books Grid -->
+            <div class="books-grid">
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">The Hollow House</h2>
+                            <p class="book-subtitle">A Haunting Tale of Lost Souls</p>
+                            <span class="book-year">2023</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Hollow House</h3>
+                        <p>When investigative journalist Sarah Mills inherits a decrepit Victorian mansion, she discovers it's a gateway between worlds.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 320 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.8/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">Whispers in the Dark</h2>
+                            <p class="book-subtitle">Where Secrets Never Die</p>
+                            <span class="book-year">2022</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>Whispers in the Dark</h3>
+                        <p>A detective's investigation into a series of disappearances leads him to a town where the dead speak.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 298 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.7/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">The Shadow Collector</h2>
+                            <p class="book-subtitle">Gathering the Lost Souls</p>
+                            <span class="book-year">2021</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Shadow Collector</h3>
+                        <p>An antique dealer discovers that some objects trap the souls of their previous owners.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 342 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.9/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">Midnight Visitors</h2>
+                            <p class="book-subtitle">When the Dead Come Calling</p>
+                            <span class="book-year">2020</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>Midnight Visitors</h3>
+                        <p>A family's peaceful countryside retreat becomes a nightmare when they realize their new home was built on a cemetery.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 276 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.6/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">The Mourning Veil</h2>
+                            <p class="book-subtitle">A Bride's Eternal Promise</p>
+                            <span class="book-year">2019</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>The Mourning Veil</h3>
+                        <p>A wedding dress with a dark history becomes the centerpiece of a century-old curse.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 312 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.5/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        <div class="book-cover-inner">
+                            <h2 class="book-title">Echoes of Salem</h2>
+                            <p class="book-subtitle">The Witch's Revenge</p>
+                            <span class="book-year">2018</span>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3>Echoes of Salem</h3>
+                        <p>When a historian uncovers a hidden diary from the Salem witch trials, she awakens an ancient evil.</p>
+                        <div class="book-meta">
+                            <span><i class="fas fa-book"></i> 368 Pages</span>
+                            <span><i class="fas fa-star"></i> 4.8/5</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Series Section -->
+            <div class="series-section">
+                <div class="series-title">
+                    <h2>The Blackwood Chronicles</h2>
+                </div>
+                <p class="series-intro">A haunting trilogy that follows detective Eleanor Blackwood as she investigates supernatural crimes that challenge everything she believes about reality.</p>
+                
+                <div class="series-books">
+                    <div class="series-book">
+                        <h3><span class="book-number">1</span> The Blackwood Inheritance</h3>
+                        <p>Eleanor inherits her grandmother's estate and discovers a family legacy of supernatural encounters.</p>
+                        <a href="#" class="btn">Read More</a>
+                    </div>
+                    
+                    <div class="series-book">
+                        <h3><span class="book-number">2</span> Shadows of the Past</h3>
+                        <p>Eleanor's investigation into a series of murders reveals connections to her family's dark history.</p>
+                        <a href="#" class="btn">Read More</a>
+                    </div>
+                    
+                    <div class="series-book">
+                        <h3><span class="book-number">3</span> The Final Reckoning</h3>
+                        <p>Eleanor must confront the source of her family's curse before it consumes everything she loves.</p>
+                        <a href="#" class="btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter CTA -->
+            <div class="newsletter-cta">
+                <h2>Join the Darkness</h2>
+                <p>Subscribe to my newsletter for exclusive content, early access to new releases, and behind-the-scenes insights.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Victoria Blackthorne</h3>
+                    <p>Author of haunting tales that explore the thin veil between the living and the dead. Welcome to a world where every shadow has a story to tell.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-goodreads"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">Books</a></li>
+                        <li><a href="#">About the Author</a></li>
+                        <li><a href="#">Reviews</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> contact@victoriablackthorne.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Salem, MA</p>
+                    <p><i class="fas fa-globe"></i> www.victoriablackthorne.com</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Victoria Blackthorne. All rights reserved. Designed with <i class="fas fa-heart" style="color: var(--accent);"></i> | HaxorAnix </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // Initialize particles
+        createParticles();
+    </script>
+</body>
+</html>
